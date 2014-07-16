@@ -24,7 +24,7 @@ getTimesForStop = (stop = 1234, callback) ->
 
       number = time.RouteNo
       minutes = (arrivalTime - timeResponded) / 1000 / 60
-      string = arrivalTime.from(timeResponded)
+      string = arrivalTime.from(timeResponded, true)
 
       { number, minutes, string }
 
@@ -35,8 +35,10 @@ app.use logfmt.requestLogger()
 app.post '/ferocia', (req, res) ->
   getTimesForStop 1234, (route1) ->
     getTimesForStop 1396, (route112) ->
+      route1times = route1.map((time) -> time.string).join(', ')
+      route112times = route112.map((time) -> time.string).join(', ')
       response =
-        text: "The next tram on route 1 to the city is due #{route1[0].string}. The next tram on route 112 to the city is due #{route112[0].string}."
+        text: "Did somebody mention *trams*?\n*Route 1:* #{route1times}\n*Route 112:* #{route112times}"
       res.send(response)
 
 app.get '/stop/:id', (req, res) ->
