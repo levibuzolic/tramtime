@@ -33,7 +33,7 @@ getTimesForStop = (stop = 1234, callback) ->
 
 app.use logfmt.requestLogger()
 
-app.get '/ferocia', (req, res) ->
+app.post '/ferocia', (req, res) ->
   getTimesForStop 1234, (route1) ->
     getTimesForStop 1396, (route112) ->
       response =
