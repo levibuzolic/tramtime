@@ -4,7 +4,7 @@
   "description": "Melbourne tram times as a simple node js server.",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",
@@ -18,9 +18,10 @@
   "homepage": "https://github.com/levibuzolic/tramtime",
   "dependencies": {
     "express": "^4.6.1",
+    "logfmt": "^1.1.2",
     "request": "^2.37.0"
   },
-  "scripts": {
-    "start": "node app.js"
+  "engines": {
+    "node": "0.10.x"
   }
 }

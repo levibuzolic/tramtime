@@ -1,10 +1,17 @@
 var express = require('express');
 var request = require('request');
+var logfmt = require('logfmt');
 var app = express();
 var port = Number(process.env.PORT || 4000);
 
 var server = app.listen(port, function() {
-  console.log('Listening on port %d', server.address().port);
+  console.log('Listening on port ' + port);
+});
+
+app.use(logfmt.requestLogger());
+
+app.get('/', function(req, res) {
+  res.send('it works!');
 });
 
 app.get('/stop', function(req, res) {
