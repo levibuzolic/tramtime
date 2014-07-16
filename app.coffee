@@ -25,9 +25,8 @@ getTimesForStop = (stop = 1234, callback) ->
       number = time.RouteNo
       minutes = (arrivalTime - timeResponded) / 1000 / 60
       string = arrivalTime.from(timeResponded)
-      time = arrivalTime.format('LLLL')
 
-      { number, minutes, string, time }
+      { number, minutes, string }
 
     callback?(results)
 
