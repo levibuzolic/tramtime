@@ -48,5 +48,3 @@ app.get '/stop/:id', (req, res) ->
 app.use (err, req, res, next) ->
   console.error err.stack
   res.send 500, 'Error 500'
-
-#
