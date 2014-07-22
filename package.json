@@ -4,7 +4,7 @@
   "description": "Melbourne tram times as a simple node js server.",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "foreman start"
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,7 @@
     "express": "^4.6.1",
     "logfmt": "^1.1.2",
     "moment": "^2.7.0",
+    "newrelic": "^1.8.1",
     "request": "^2.37.0"
   },
   "engines": {
