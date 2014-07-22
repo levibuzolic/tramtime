@@ -1,3 +1,4 @@
+newrelic = require('newrelic')
 express = require('express')
 request = require('request')
 moment = require('moment')
