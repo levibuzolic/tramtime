@@ -2,9 +2,9 @@
   "name": "tramtime",
   "version": "0.0.1",
   "description": "Melbourne tram times as a simple node js server.",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
-    "start": "foreman start"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -17,12 +17,10 @@
   },
   "homepage": "https://github.com/levibuzolic/tramtime",
   "dependencies": {
-    "coffee-script": "^1.7.1",
-    "express": "^4.6.1",
-    "logfmt": "^1.1.2",
-    "moment": "^2.7.0",
-    "newrelic": "^1.8.1",
-    "request": "^2.37.0"
+    "express": "^4.13.1",
+    "logfmt": "^1.2.0",
+    "moment": "^2.10.3",
+    "request": "^2.58.0"
   },
   "engines": {
     "node": "0.10.x"
