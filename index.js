@@ -80,6 +80,10 @@ app.get('/stop/:id', function(req, res) {
   });
 });
 
+app.get('/', function(req, res){
+  res.send('Hello!');
+});
+
 app.use(function(err, req, res, next) {
   console.error(err.stack);
   return res.send(500, 'Error 500');
