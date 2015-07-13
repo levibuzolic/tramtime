@@ -75,7 +75,7 @@ app.post('/ferocia', function(req, res) {
 });
 
 app.get('/stop/:id', function(req, res) {
-  return getTimesForStop(req.params.id, function(results) {
+  return getTimesForStop(parseInt(req.params.id), function(results) {
     return res.send(results);
   });
 });
