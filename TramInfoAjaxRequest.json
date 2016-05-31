@@ -1,0 +1,92 @@
+// ERROR CASE
+{
+  "errorMessage": "Stop not found.",
+  "TramTrackerResponse": null
+}
+
+// HAPPY CASE
+{
+  "errorMessage": null,
+  "TramTrackerResponse": {
+    "StopID": 1532,
+    "StopNo": 0,
+    "Route": null,
+    "StopName": "South Melbourne",
+    "StopNameSecondary": "",
+    "LowFloorOnly": false,
+    "CityDirection": " - towards City",
+    "ArrivalsPages": [
+      [
+        {
+          "AirConditioned": true,
+          "Destination": "East Brunswick",
+          "DisplayAC": true,
+          "DisruptionMessage": {
+            "DisplayType": "Text",
+            "MessageCount": 0,
+            "Messages": []
+          },
+          "HasDisruption": false,
+          "HasSpecialEvent": true,
+          "HeadBoardRouteNo": "96",
+          "InternalRouteNo": 96,
+          "IsLowFloorTram": true,
+          "IsTTAvailable": true,
+          "PredictedArrivalDateTime": "/Date(1464674142000+1000)/",
+          "RouteNo": "96",
+          "SpecialEventMessage": "Work until last tram Tuesday 7 June: Route 96 operating between East Brunswick & Luna Park. Info: yarratrams.com.au",
+          "TripID": 0,
+          "VehicleNo": 6013,
+          "TramClass": "e",
+          "Arrival": "NOW"
+        },
+        {
+          "AirConditioned": true,
+          "Destination": "East Brunswick",
+          "DisplayAC": true,
+          "DisruptionMessage": {
+            "DisplayType": "Text",
+            "MessageCount": 0,
+            "Messages": []
+          },
+          "HasDisruption": false,
+          "HasSpecialEvent": true,
+          "HeadBoardRouteNo": "96",
+          "InternalRouteNo": 96,
+          "IsLowFloorTram": true,
+          "IsTTAvailable": true,
+          "PredictedArrivalDateTime": "/Date(1464674502000+1000)/",
+          "RouteNo": "96",
+          "SpecialEventMessage": "Work until last tram Tuesday 7 June: Route 96 operating between East Brunswick & Luna Park. Info: yarratrams.com.au",
+          "TripID": 0,
+          "VehicleNo": 6004,
+          "TramClass": "e",
+          "Arrival": "5"
+        },
+        {
+          "AirConditioned": false,
+          "Destination": "East Brunswick",
+          "DisplayAC": false,
+          "DisruptionMessage": {
+            "DisplayType": "Text",
+            "MessageCount": 0,
+            "Messages": []
+          },
+          "HasDisruption": false,
+          "HasSpecialEvent": true,
+          "HeadBoardRouteNo": "96",
+          "InternalRouteNo": 96,
+          "IsLowFloorTram": false,
+          "IsTTAvailable": true,
+          "PredictedArrivalDateTime": "/Date(1464674880000+1000)/",
+          "RouteNo": "96",
+          "SpecialEventMessage": "Work until last tram Tuesday 7 June: Route 96 operating between East Brunswick & Luna Park. Info: yarratrams.com.au",
+          "TripID": 0,
+          "VehicleNo": 0,
+          "TramClass": "z1",
+          "Arrival": "12"
+        }
+      ]
+    ]
+  }
+}
