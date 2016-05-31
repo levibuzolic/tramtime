@@ -16,7 +16,7 @@ var getRandomNumber = function() {
 };
 
 var getRandomToken = function() {
-  return ['F57', getRandomNumber(), getRandomNumber(), '61F-8AA4-4626-969A-B48A0659B2DF'].join();
+  return ['F57', getRandomNumber(), getRandomNumber(), '61F-8AA4-4626-969A-B48A0659B2DF'].join('');
 };
 
 var getUrl = function(stop, route) {
@@ -30,8 +30,9 @@ var parseDateString = function(string) {
   return moment(Number(matches[1]));
 };
 
-var getTimes = function(stop, route, callback) {
+var getTimes = function(stop, route, title, footer) {
   return new Promise(function(resolve, reject){
+    console.log(getUrl(stop, route));
     request(getUrl(stop, route), function(apiError, apiResponse, apiBody) {
       var arrivalTime, json, minutes, number, results, string, time, timeResponded, times;
       json = JSON.parse(apiBody);
@@ -57,7 +58,14 @@ var getTimes = function(stop, route, callback) {
         return routeTime.string;
       }).join(', ');
 
-      resolve("*Route "+route+":* " + results);
+      resolve({
+        fallback: title + ': ' + results,
+        color: "#bcd531",
+        title: title,
+        text: results,
+        footer: footer
+      });
+
     });
   });
 };
@@ -66,12 +74,11 @@ app.use(logfmt.requestLogger());
 
 app.post('/ferocia', function(req, res) {
   Promise.all([
-    getTimes(1234, 1),
-    getTimes(1396, 12),
-    getTimes(3020, 6)
+    getTimes(1395, 12, 'Route 12', 'Stop 128 - To City - Corner of Dorcas & Clarendon'),
+    getTimes(1532, 96, 'Route 96', 'Stop 127 - To City - South Melbourne Markets')
   ]).then(function(results) {
     res.send({
-      text: ["Did somebody mention *trams*?"].concat(results).join("\n")
+      attachments: results
     });
   });
 });
