@@ -5,7 +5,7 @@ var logfmt = require('logfmt');
 var Promise = require('promise');
 
 var app = express();
-var port = Number(process.env.PORT || 4000);
+var port = Number(process.env.PORT || 2369);
 
 var server = app.listen(port, function() {
   return console.log('Listening on port ' + port);
