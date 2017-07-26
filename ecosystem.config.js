@@ -27,7 +27,8 @@ module.exports = {
       ref: 'origin/master',
       repo: 'git@github.com:levibuzolic/tramtime.git',
       path: '/var/www/ferociatrams.wtf0.com',
-      'post-deploy': 'node --version && which node && which npm && npm install && pm2 reload ecosystem.config.js --env production'
+      'post-setup': 'which nvm &&  node --version && which node && which npm',
+      'post-deploy': 'npm install && pm2 reload ecosystem.config.js --env production'
     }
   }
 };
