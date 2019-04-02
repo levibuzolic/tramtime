@@ -11,7 +11,7 @@ function randomToken() {
 
 function getUrl(stop, route) {
   route = route || 0;
-  return `http://ws3.tramtracker.com.au/TramTracker/restservice/GetNextPredictedRoutesCollection/${stop}/${route}/false/?aid=TTIOSJSON&cid=2&tkn=${getRandomToken()}`;
+  return `http://ws3.tramtracker.com.au/TramTracker/restservice/GetNextPredictedRoutesCollection/${stop}/${route}/false/?aid=TTIOSJSON&cid=2&tkn=${randomToken()}`;
 }
 
 function parseDateString(string) {
@@ -58,6 +58,7 @@ function getTimes(stop, route, title, footer) {
 }
 
 module.exports = (req, res) => {
+  res.setHeader('content-type', 'application/json');
   Promise.all([
     getTimes(1395, 12, 'Route 12', 'Stop 128 - To City - Corner of Dorcas & Clarendon'),
     getTimes(1532, 96, 'Route 96', 'Stop 127 - To City - South Melbourne Market')

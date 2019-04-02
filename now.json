@@ -3,7 +3,7 @@
   "name": "tramtime",
   "builds": [
     {
-      "src": "**/*.js",
+      "src": "index.js",
       "use": "@now/node"
     }
   ]
