@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "name": "tramtime",
+  "builds": [
+    {
+      "src": "**/*.js",
+      "use": "@now/node"
+    }
+  ]
+}

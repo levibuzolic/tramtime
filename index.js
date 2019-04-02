@@ -1,39 +1,34 @@
-var express = require('express');
-var request = require('request');
-var moment = require('moment');
-var logfmt = require('logfmt');
-var Promise = require('promise');
+const express = require('express');
+const request = require('request');
+const helmet = require('helmet');
+const moment = require('moment');
+const logfmt = require('logfmt');
 
-var app = express();
-var port = Number(process.env.PORT || 2369);
+const app = express();
+app.use(helmet());
 
-var server = app.listen(port, function() {
-  return console.log('Listening on port ' + port);
-});
+function randomNumber() {
+  return Math.floor(Math.random() * 9.99);
+}
 
-var getRandomNumber = function() {
-  return Math.floor(Math.random() * 10);
-};
+function randomToken() {
+  return `F57${randomNumber()}${randomNumber()}61F-8AA4-4626-969A-B48A0659B2DF`;
+}
 
-var getRandomToken = function() {
-  return ['F57', getRandomNumber(), getRandomNumber(), '61F-8AA4-4626-969A-B48A0659B2DF'].join('');
-};
-
-var getUrl = function(stop, route) {
+function getUrl(stop, route) {
   route = route || 0;
-  return "http://ws3.tramtracker.com.au/TramTracker/restservice/GetNextPredictedRoutesCollection/" + stop + "/" + route + "/false/?aid=TTIOSJSON&cid=2&tkn=" + getRandomToken();
-};
+  return `http://ws3.tramtracker.com.au/TramTracker/restservice/GetNextPredictedRoutesCollection/${stop}/${route}/false/?aid=TTIOSJSON&cid=2&tkn=${getRandomToken()}`;
+}
 
-var parseDateString = function(string) {
-  var matches;
-  matches = string.match(/\/Date\((\d+)\+\d+\)\//);
+function parseDateString(string) {
+  const matches = string.match(/\/Date\((\d+)\+\d+\)\//);
   return moment(Number(matches[1]));
-};
+}
 
-var getTimes = function(stop, route, title, footer) {
-  return new Promise(function(resolve, reject){
+function getTimes(stop, route, title, footer) {
+  return new Promise((resolve, reject) => {
     console.log(getUrl(stop, route));
-    request(getUrl(stop, route), function(apiError, apiResponse, apiBody) {
+    request(getUrl(stop, route), (apiError, apiResponse, apiBody) => {
       var arrivalTime, json, minutes, number, results, string, time, timeResponded, times;
       json = JSON.parse(apiBody);
       timeResponded = parseDateString(json.timeResponded);
@@ -54,12 +49,10 @@ var getTimes = function(stop, route, title, footer) {
           });
         }
         return results1;
-      })().map(function(routeTime) {
-        return routeTime.string;
-      }).join(', ');
+      })().map(routeTime => routeTime.string).join(', ');
 
       resolve({
-        fallback: title + ': ' + results,
+        fallback: `${title}: ${results}`,
         color: "#bcd531",
         title: title,
         text: results,
@@ -68,32 +61,20 @@ var getTimes = function(stop, route, title, footer) {
 
     });
   });
-};
+}
 
 app.use(logfmt.requestLogger());
 
-app.post('/ferocia', function(req, res) {
+app.get('*', (req, res) => {
+  res.set('Content-Type', 'application/json');
   Promise.all([
     getTimes(1395, 12, 'Route 12', 'Stop 128 - To City - Corner of Dorcas & Clarendon'),
-    getTimes(1532, 96, 'Route 96', 'Stop 127 - To City - South Melbourne Markets')
+    getTimes(1532, 96, 'Route 96', 'Stop 127 - To City - South Melbourne Market')
   ]).then(function(results) {
-    res.send({
+    res.send(200, {
       attachments: results
     });
   });
 });
 
-app.get('/stop/:stop/:route', function(req, res) {
-  return getTimes(parseInt(req.params.stop), parseInt(req.params.route)).then(function(results) {
-    return res.send(results);
-  });
-});
-
-app.get('/', function(req, res){
-  res.send('Hello!');
-});
-
-app.use(function(err, req, res, next) {
-  console.error(err.stack);
-  return res.send(500, 'Error 500');
-});
+module.exports = app;
