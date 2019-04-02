@@ -17,9 +17,6 @@
   },
   "homepage": "https://github.com/levibuzolic/tramtime",
   "dependencies": {
-    "express": "^4.13.1",
-    "helmet": "^3.16.0",
-    "logfmt": "^1.2.0",
     "moment": "^2.10.3",
     "request": "^2.58.0"
   },

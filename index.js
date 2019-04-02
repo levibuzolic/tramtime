@@ -1,11 +1,5 @@
-const express = require('express');
 const request = require('request');
-const helmet = require('helmet');
 const moment = require('moment');
-const logfmt = require('logfmt');
-
-const app = express();
-app.use(helmet());
 
 function randomNumber() {
   return Math.floor(Math.random() * 9.99);
@@ -63,18 +57,13 @@ function getTimes(stop, route, title, footer) {
   });
 }
 
-app.use(logfmt.requestLogger());
-
-app.get('*', (req, res) => {
-  res.set('Content-Type', 'application/json');
+module.exports = (req, res) => {
   Promise.all([
     getTimes(1395, 12, 'Route 12', 'Stop 128 - To City - Corner of Dorcas & Clarendon'),
     getTimes(1532, 96, 'Route 96', 'Stop 127 - To City - South Melbourne Market')
-  ]).then(function(results) {
-    res.send({
+  ]).then(results => {
+    res.end({
       attachments: results
     });
   });
-});
-
-module.exports = app;
+}
