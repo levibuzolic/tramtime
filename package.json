@@ -24,6 +24,6 @@
     "request": "^2.58.0"
   },
   "engines": {
-    "node": "9.x.x"
+    "node": "8.x.x"
   }
 }
