@@ -62,9 +62,9 @@ module.exports = (req, res) => {
   Promise.all([
     getTimes(1395, 12, 'Route 12', 'Stop 128 - To City - Corner of Dorcas & Clarendon'),
     getTimes(1532, 96, 'Route 96', 'Stop 127 - To City - South Melbourne Market')
-  ]).then(results => {
-    res.end({
-      attachments: results
-    });
+  ]).then(attachments => {
+    res.end(JSON.stringify({attachments}));
+  }).catch(error => {
+    console.error(error);
   });
 }
