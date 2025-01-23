@@ -1,70 +1,78 @@
-const request = require('request');
-const moment = require('moment');
+const request = require("request");
+const moment = require("moment");
 
-function randomNumber() {
-  return Math.floor(Math.random() * 9.99);
-}
+const randomNumber = () => Math.floor(Math.random() * 9.99);
 
-function randomToken() {
-  return `F57${randomNumber()}${randomNumber()}61F-8AA4-4626-969A-B48A0659B2DF`;
-}
+const randomToken = () =>
+	`F57${randomNumber()}${randomNumber()}61F-8AA4-4626-969A-B48A0659B2DF`;
 
-function getUrl(stop, route) {
-  route = route || 0;
-  return `http://ws3.tramtracker.com.au/TramTracker/restservice/GetNextPredictedRoutesCollection/${stop}/${route}/false/?aid=TTIOSJSON&cid=2&tkn=${randomToken()}`;
-}
+const getUrl = (stop, route = 0) =>
+	`http://ws3.tramtracker.com.au/TramTracker/restservice/GetNextPredictedRoutesCollection/${stop}/${route}/false/?aid=TTIOSJSON&cid=2&tkn=${randomToken()}`;
 
-function parseDateString(string) {
-  const matches = string.match(/\/Date\((\d+)\+\d+\)\//);
-  return moment(Number(matches[1]));
-}
+const parseDateString = (string) => {
+	const matches = string.match(/\/Date\((\d+)\+\d+\)\//);
+	return moment(Number(matches[1]));
+};
 
-function getTimes(stop, route, title, footer) {
-  return new Promise((resolve, reject) => {
-    console.log(getUrl(stop, route));
-    request(getUrl(stop, route), (apiError, apiResponse, apiBody) => {
-      var arrivalTime, json, minutes, number, results, string, time, timeResponded, times;
-      json = JSON.parse(apiBody);
-      timeResponded = parseDateString(json.timeResponded);
-      times = json.responseObject || [];
-      results = (function() {
-        var i, len, results1;
-        results1 = [];
-        for (i = 0, len = times.length; i < len; i++) {
-          time = times[i];
-          arrivalTime = parseDateString(time.PredictedArrivalDateTime);
-          number = time.RouteNo;
-          minutes = (arrivalTime - timeResponded) / 1000 / 60;
-          string = arrivalTime.from(timeResponded, true);
-          results1.push({
-            number: number,
-            minutes: minutes,
-            string: string
-          });
-        }
-        return results1;
-      })().map(routeTime => routeTime.string).join(', ');
+const getTimes = async (stop, route, title, footer) => {
+	try {
+		const url = getUrl(stop, route);
+		console.log(url);
+		const apiBody = await new Promise((resolve, reject) => {
+			request(url, (apiError, apiResponse, apiBody) => {
+				if (apiError) return reject(apiError);
+				resolve(apiBody);
+			});
+		});
 
-      resolve({
-        fallback: `${title}: ${results}`,
-        color: "#bcd531",
-        title: title,
-        text: results,
-        footer: footer
-      });
+		const json = JSON.parse(apiBody);
+		const timeResponded = parseDateString(json.timeResponded);
+		const times = json.responseObject || [];
+		const results = times
+			.map((time) => {
+				const arrivalTime = parseDateString(time.PredictedArrivalDateTime);
+				const number = time.RouteNo;
+				const minutes = (arrivalTime - timeResponded) / 1000 / 60;
+				const string = arrivalTime.from(timeResponded, true);
+				return { number, minutes, string };
+			})
+			.map((routeTime) => routeTime.string)
+			.join(", ");
 
-    });
-  });
-}
+		return {
+			fallback: `${title}: ${results}`,
+			color: "#bcd531",
+			title,
+			text: results,
+			footer,
+		};
+	} catch (error) {
+		console.error(error);
+		throw error;
+	}
+};
 
-module.exports = (req, res) => {
-  res.setHeader('content-type', 'application/json');
-  Promise.all([
-    getTimes(1395, 12, 'Route 12', 'Stop 128 - To City - Corner of Dorcas & Clarendon'),
-    getTimes(1532, 96, 'Route 96', 'Stop 127 - To City - South Melbourne Market')
-  ]).then(attachments => {
-    res.end(JSON.stringify({attachments}));
-  }).catch(error => {
-    console.error(error);
-  });
-}
+module.exports = async (req, res) => {
+	res.setHeader("content-type", "application/json");
+	try {
+		const attachments = await Promise.all([
+			getTimes(
+				1395,
+				12,
+				"Route 12",
+				"Stop 128 - To City - Corner of Dorcas & Clarendon",
+			),
+			getTimes(
+				1532,
+				96,
+				"Route 96",
+				"Stop 127 - To City - South Melbourne Market",
+			),
+		]);
+		res.end(JSON.stringify({ attachments }));
+	} catch (error) {
+		console.error(error);
+		res.statusCode = 500;
+		res.end(JSON.stringify({ error: "Internal Server Error" }));
+	}
+};
