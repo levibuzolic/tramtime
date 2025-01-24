@@ -79,22 +79,8 @@ export default async (req, res) => {
 	res.setHeader("content-type", "application/json");
 	try {
     const attachments = await Promise.all(
-      STOPS.map(({name, stop}) => getTimes(stop, 0, name, ''))
+      STOPS.map(({name, stop}) => getTimes(stop, 0, name))
     );
-		// const attachments = await Promise.all([
-		// 	getTimes(
-		// 		1395,
-		// 		12,
-		// 		"Route 12",
-		// 		"Stop 128 - To City - Corner of Dorcas & Clarendon",
-		// 	),
-		// 	getTimes(
-		// 		1532,
-		// 		96,
-		// 		"Route 96",
-		// 		"Stop 127 - To City - South Melbourne Market",
-		// 	),
-		// ]);
 		res.end(JSON.stringify({ attachments }));
 	} catch (error) {
 		console.error(error);
