@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "module": "NodeNext",
+    "checkJs": true,
+    "allowJs": true,
+    "strict": true,
+    "noEmit": true,
+    "noUncheckedIndexedAccess": true,
+    "moduleResolution": "NodeNext",
+    "esModuleInterop": true,
+    "target": "ESNext",
+    "typeRoots": ["types", "node_modules/@types"]
+  }
+}

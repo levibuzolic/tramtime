@@ -3,7 +3,7 @@
   "name": "tramtime",
   "builds": [
     {
-      "src": "index.js",
+      "src": "times.mjs",
       "use": "@now/node"
     }
   ]
